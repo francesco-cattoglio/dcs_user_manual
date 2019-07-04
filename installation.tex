@@ -1,0 +1,73 @@
+\section{Installation}
+The software does not require any installation, you can simply download it
+and unzip in a folder of your choice. 
+
+\section{Compiling from sources}
+
+If you have access to the sources you can compile them under Linux and OS X
+quite easily, since we provide with some scripts to setup everything
+in a mostly automated way.
+
+Under Windows, the code has been developed and compiled under MSYS2, which
+is a software distro and building platform for Windows. What that means is
+you have a linux-like shell environment and package manager, with a
+mingw64-based compiler toolchain. The generated executables will run
+on any 64-bit Windows machine, provided you bundle a few \texttt{dll} files.
+
+\subsection{Building instructions}
+Both the software and its dependencies are written in \CC and use CMAKE as a
+build system. You can simply [git clone] all the dependencies, cmake install
+them and be good to go.
+However, if you want a more guided way of building everything from scratch,
+you can start by cloning a repository that contains a series of scripts to help
+you in the process: [git cmake\_scripts]. Those will download and build
+all the parts with the needed cmake flags, using a temporary build folder
+so that your system root does not get polluted with any cmake install used
+in the process.
+
+For compiling you will need the following tools:
+\begin{itemize}
+    \item a recent compiler with \CC{14} support
+    \item \texttt{cmake}
+    \item the \texttt{ninja-build} build system
+    \item \texttt{pkg-config}
+\end{itemize}
+
+You will also need some development libraries. For Debian-based linux, the list of packages is as follows:
+\begin{itemize}
+    \item \texttt{libglfw3-dev}
+    \begin{itemize}
+        \item  or, as an alternative, all of the following: \\
+            \verb|libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev|
+    \end{itemize}
+    \item \texttt{libgl1-mesa-dev}
+    \item \texttt{libgtk-3-dev}
+\end{itemize}
+Please note that the dependency names might be slightly different depending on your distribution.
+
+The list of operations is as follows:
+\begin{itemize}
+    \item \texttt{git clone http://github.com/francesco\_cattoglio/cmake\_scripts.git}
+    \item run the \texttt{./cmake\_scripts/all\_git\_downloads.sh} script
+    \item \texttt{mkdir tmp\_folder}
+    \item export environment var: \texttt{export CMAKE\_BUILDS\_PREFIX=/full/path/to/tmp\_folder}
+    \item launch the \texttt{./cmake\_scripts/build\_everything.sh} script
+    \begin{itemize}
+        \item this will trigger the individual build scripts for each dependency
+    \end{itemize}
+    \item launch the final executable in the \texttt{./dcs/build} folder
+\end{itemize}
+Since the build script makes use of relative paths, please \textbf{do not change folder} before launching it.
+
+If something goes wrong, instead of calling the \texttt{build\_everything} script,
+you can build and install dependencies one at a time and keep the build
+scripts as references for the needed cmake flags.
+
+\subsection{Deployment}
+To deploy the executable, the procedure is a bit different, depending
+on which OS you are on. For Linux, everything is really simple since
+all of the libraries are compiled in as static libs.
+
+On Windows, ...
+
+On OS X, ...
