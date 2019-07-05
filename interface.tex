@@ -64,6 +64,108 @@ Both \textbf{Interval} and \textbf{Value} data deals with parameters: the first 
 the parameter and its interval boundaries, while the second contains the parameter and
 a specific value in its interval, to be used in a \textbf{Sample parameter} node.
 
+\subsection{Nodes}
+When right-clicking on some empty space inside the node graph editor, a popup menu
+will open to display all the available node types, grouped by categories.
+Clicking on one menu item will place the newly-created node of the corresponding type.
+
+\subsubsection{Geometry > Curve}
+Inputs: Interval
+Fields: fx, fy, fz
+Output: a 1D Geometry object
+
+This node is used to create a parametric curve using a parameter as defined in
+Interval and with the given expressions for fx, fy and fz. Simple to use,
+just make sure to create an expression using the correct parameter name
+(i.e. the same name used inside the Interval given as input)
+
+\subsubsection{Geometry > Bezier}
+Inputs: 2, 3 or 4 Points (0D Geometry objects)
+Fields: Quality
+Output: a 1D Geometry object
+
+This node uses its inputs as control points for a Bezi\`er curve. The degree of the
+curve depends on how many inputs have been connected. Empty inputs are ignored.
+The Quality field determines how many points will be used to approximate the ideal
+Bezi\`er.
+
+\subsubsection{Geometry > Surface}
+Inputs: 2 Intervals
+Fields: fx, fy, fz
+Output: a 2D Geometry object
+
+Similarly to the curve node, this can be used to create a parametric surface
+given two intervals and the given expressions for fx, fy and fz.
+Both intervals are required, and the user should make sure to use both of them,
+since if one is ignored it is likely that nothing will be visualized as a result,
+since that will create a degenerated surface.
+
+\subsubsection{Geometry > Plane}
+Inputs: one point (0D Geometry), one Vector
+Fields: none
+Output: a Mesh Geometry object
+
+This node takes one point and a normal vector to create a special representation
+of a plane. In particular, the representation consists of an evely-spaced grid centered
+about the point given as input.
+
+Please note the output is \textbf{not} a 2D Geometry, but a Mesh Geometry,
+which means that the purpose of this node is to have something useful for
+visualization purposes, not to have a built-in parametric surface.
+It is not allowed to apply a parametric transform to a Mesh Geometry,
+only a constant-valued transform or a time-dependant transform can be applied to it.
+
+\subsubsection{Geometry > Primitive}
+Inputs: none
+Fields: Kind (a drop-down menu), Size
+Outputs: a Mesh Geometry object
+
+This node allows the user to create a basic primitive of the given kind
+(Cube, Sphere, Cylinder, Cone, Pyramid or a Dice). The Size fields allows
+adjusting the primitive dimensions. See the question mark next to the 
+slider for a description of how this value effects the output.
+
+Just like the Plane node, the output is a Mesh Geometry, which is useful
+for quick visualization or similar purposes. Again, only constant-valued
+or time-dependent transforms can be applied to this object,
+parametric transforms are not allowed.
+
+\subsubsection{Parameters > Interval}
+Inputs: None
+Fields: Name, Begin, End, Quality
+Outputs: Interval
+
+This node defines a parameter. By assigning a name, you will then be able
+to use this parameter in expressions for parametric curves, surfaces and matrices.
+Begin and End define the closed range in which the parameter lives, while quality
+allows the user to choose how many discretization points will be used when creating
+a curve or a surface out of this parameter.
+
+\subsubsection{Parameters > Value}
+Inputs: None
+Fields: Name, Value
+Outputs: Parameter Value
+
+In a similar way to the Interval node, the Value node lets you define a parameter
+and assign a specific value to it. You can use it either as a "variable"
+to be used as input for a matrix (e.g. define a theta and then use theta as the
+angle for a rotation matrix expressions) or as an input to the Sample Parameter node.
+
+
+
+\subsubsection{Parameters > Sample Parameter}
+Inputs: 1D or 2D Geometry object, Parameter Value
+Fields: none
+Outputs: 0D or 1D Geometry object
+
+The parameter sampling operation allows you to "downgrade" the dimension of a parametric
+Geometric object, by fixing the value of a parameter to the value given as input.
+
+In order for the operation to succeed, the Geometry must have a parameter with the same name
+as to the one used in the Value input (e.g. if a surface is $S(p, q)$, your value cannot
+have the parameter name $r$, only $p$ or $q$ will be accepted). Please note that 1D Geometry created with the Bezi\`er
+curve uses a hidden parameter name, and cannot therefore be sampled.
+
 \subsection{Notes}
 Assembling a graph does not have a 1:1 correspondency with writing procedural
 code (e.g.: classical C code). You are only describing a series of
