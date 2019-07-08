@@ -151,8 +151,6 @@ and assign a specific value to it. You can use it either as a "variable"
 to be used as input for a matrix (e.g. define a theta and then use theta as the
 angle for a rotation matrix expressions) or as an input to the Sample Parameter node.
 
-
-
 \subsubsection{Parameters > Sample Parameter}
 Inputs: 1D or 2D Geometry object, Parameter Value
 Fields: none
@@ -165,6 +163,92 @@ In order for the operation to succeed, the Geometry must have a parameter with t
 as to the one used in the Value input (e.g. if a surface is $S(p, q)$, your value cannot
 have the parameter name $r$, only $p$ or $q$ will be accepted). Please note that 1D Geometry created with the Bezi\`er
 curve uses a hidden parameter name, and cannot therefore be sampled.
+
+\subsubsection{Transformations > Generic Matrix}
+Inputs: Parameter (either Interval or Value), facultative
+Fields: matrix elements
+Outputs: Matrix object
+
+This node is used to define a generic Matrix, by writing one expression for each
+matrix element. If an Interval is given as an input, then the output matrix will be
+a parametric one.
+Note that due to the nature of the software, there is no way to define a projection matrix,
+since the last row of the matrix is fixed and cannot be modified.
+
+As usual, if you provide a parameter as an input, make sure you
+will be actually using it inside the expressions to prevent any kind of visualization
+issue.
+
+\subsubsection{Transformations > Rotation Matrix}
+Inputs: None
+Fields: Axis (drop down menu), Angle
+Outputs: Matrix object
+
+This node allows the user to quickly define a matrix which represents a rotation
+of Angle radians around the chosen Axis.
+
+\subsubsection{Transformations > Translation Matrix}
+Inputs: Vector
+Fields: None
+Outputs: Matrix Object
+
+Similarly to the previous, this node allows the user to quickly define a translation
+matrix given the input Vector
+
+\subsubsection{Transformations > Transform}
+Inputs: Geometry object, Matrix object
+Fields: None
+Outputs: Geometry object
+
+This node takes a matrix and applies it to a geometry, returning the transformed geometry.
+If the input matrix was a parametric matrix, then a parametric transformation will be applied.
+Please note that a parametric transform is not ``blindly'' applied to an object: if we have
+a parametric curve or surface that depends on the same parameter used by the matrix,
+the output geometry will still be a curve or a surface, modified accordingly
+(e.g. applying a translation to a circle may output a spiral)
+
+\subsubsection{Transformations > Time Transform}
+Inputs: None
+Fields: matrix elements
+Outputs: Time Transform object
+
+This node creates a Time Transform object, read th paragraph in the Data Types
+section for more informations. All the expressions for the matrix elements
+can contain the parameter $t$, i.e. ``time''.
+
+\subsubsection{Point}
+Inputs: none
+Fields: $x$, $y$, $z$
+Outputs: 0D Geometry object
+
+A very simple node to create a point. The implicit $w$ coordinate is set to $1$
+
+\subsubsection{Vector}
+Inputs: none
+Fields: $x$, $y$, $z$
+Outputs: Vector object
+
+A very simple node to create a Vector. As described in the data types section, a vector
+is to be interpreted as a ``direction'', and the implicit $w$ coordinate is set to $0$
+
+\subsubsection{Geometry Renderer}
+Inputs: Geometry, Time Transform
+Fields: Thickness, Color
+Outputs: None
+
+This node is the one responsible for taking a Geometry object and rendering it to the screen.
+Every frame the the Time Transform is applied to the it before rendering, by evaluating the
+transform with a different value of $t$. The user can choose what color to use for any kind
+of Geometry, while the Thickness value only effects the display of 1D geometries (curves).
+
+\subsubsection{Vector Renderer}
+Inputs: Point, Vector
+Fields: Thickness, Color
+Outputs: None
+
+This node is used to display a Vector, by representing it as an arrow.
+Since a Vector is only a direction, the user must also provide the application point (i.e: the "tail") of the vector.
+Just like with the Geometry Renderer, one can choose a color and the thickness of the arrow.
 
 \subsection{Notes}
 Assembling a graph does not have a 1:1 correspondency with writing procedural
