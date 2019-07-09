@@ -1,6 +1,6 @@
-\section{User Interface}
+\chapter{User Interface}
 
-\subsection{Basic concepts}
+\section{Basic concepts}
 The central element of the user interface is the node graph editor. Inside it
 you create and link nodes of different type to assemble the scene containing all
 the computed objects.
@@ -25,8 +25,8 @@ One can only connect an output to an input of the same type. For example, it
 would not make sense to pass an \textbf{Interval} to a node that requires
 a \textbf{Matrix} input.
 
-\subsection{Data types}
-\subsubsection{Geometry type}
+\section{Data types}
+\subsection{Geometry type}
 The most important data type is \textbf{Geometry}. This represents a generic geometric
 object, it might be a point, a curve, a surface or a pre-fabricated mesh.
 Most of the time we start by creating a geometry of some sort, then
@@ -37,7 +37,7 @@ As we will see later on, parametric transformations and sampling operations
 can change the geometric dimension of a Geometry object. As an example,
 a given curve can become a surface by applying a parametric transform to it.
 
-\subsubsection{Vector type}
+\subsection{Vector type}
 As the name implies, the data contained in this type is just a vector with
 user-chosen $x$, $y$ and $z$ coordinates. There is however a very important
 difference between a vector and a point: a vector is \textbf{not} a Geometry and
@@ -46,53 +46,83 @@ visualization purposes. This is because the vector is to be intended as a direct
 not as a generic coordinate in the 3D space. If we write a vector
 in homogeneous coordinates, its $w$ component is \textbf{always zero}.
 
-\subsubsection{Matrix type}
+\subsection{Matrix type}
 This data contains a 4x4 matrix which should be interpreted as a transformation written in
 homogeneous coordinates. The matrix can be either parametric or a constant-valued one.
 See the nodes section of this chapter to know more about the different matrices that can
 be created.
 
-\subsubsection{Time Transform}
+\subsection{Time Transform}
 This is a very specific 4x4 matrix with an implicit parameter named $t$ as in \textit{time}.
 By writing out time-dependent expressions, the user can attach some animation to 
 a rendered Geometry object. This can be useful for example to show the movement of a
 point along a curve, or to display how a transformation progressively deforms an object
 into a final shape.
 
-\subsubsection{Interval and Value}
+\subsection{Interval and Value}
 Both \textbf{Interval} and \textbf{Value} data deals with parameters: the first contains
 the parameter and its interval boundaries, while the second contains the parameter and
 a specific value in its interval, to be used in a \textbf{Sample parameter} node.
 
-\subsection{Nodes}
+\section{Nodes}
 When right-clicking on some empty space inside the node graph editor, a popup menu
 will open to display all the available node types, grouped by categories.
 Clicking on one menu item will place the newly-created node of the corresponding type.
 
-\subsubsection{Geometry > Curve}
-Inputs: Interval
-Fields: fx, fy, fz
-Output: a 1D Geometry object
+\subsection{Geometry}
+The geometry submenu contains the following nodes:
+
+\subsubsection{Curve}
+
+\hspace{\baselineskip}
+\begin{tabular}{g|l}
+    \hline
+    Inputs: & Interval              \\
+    \hline
+    Fields: & fx, fy, fz            \\
+    \hline
+    Output: & a 1D Geometry object  \\
+    \hline
+\end{tabular}
+\vspace{5pt}
 
 This node is used to create a parametric curve using a parameter as defined in
 Interval and with the given expressions for fx, fy and fz. Simple to use,
 just make sure to create an expression using the correct parameter name
 (i.e. the same name used inside the Interval given as input)
 
-\subsubsection{Geometry > Bezier}
-Inputs: 2, 3 or 4 Points (0D Geometry objects)
-Fields: Quality
-Output: a 1D Geometry object
+\subsubsection{Bezier}
+
+\hspace{\baselineskip}
+\begin{tabular}{g|l}
+    \hline
+    Inputs: & 2, 3 or 4 Points (0D Geometry objects)\\
+    \hline
+    Fields: & Quality\\
+    \hline
+    Output: & a 1D Geometry object\\
+    \hline
+\end{tabular}
+\vspace{5pt}
 
 This node uses its inputs as control points for a Bezi\`er curve. The degree of the
 curve depends on how many inputs have been connected. Empty inputs are ignored.
 The Quality field determines how many points will be used to approximate the ideal
 Bezi\`er.
 
-\subsubsection{Geometry > Surface}
-Inputs: 2 Intervals
-Fields: fx, fy, fz
-Output: a 2D Geometry object
+\subsubsection{Surface}
+
+\hspace{\baselineskip}
+\begin{tabular}{g|l}
+    \hline
+    Inputs: & 2 Intervals\\
+    \hline
+    Fields: & fx, fy, fz\\
+    \hline
+    Output: & a 2D Geometry object\\
+    \hline
+\end{tabular}
+\vspace{5pt}
 
 Similarly to the curve node, this can be used to create a parametric surface
 given two intervals and the given expressions for fx, fy and fz.
@@ -100,10 +130,19 @@ Both intervals are required, and the user should make sure to use both of them,
 since if one is ignored it is likely that nothing will be visualized as a result,
 since that will create a degenerated surface.
 
-\subsubsection{Geometry > Plane}
-Inputs: one point (0D Geometry), one Vector
-Fields: none
-Output: a Mesh Geometry object
+\subsubsection{Plane}
+
+\hspace{\baselineskip}
+\begin{tabular}{g|l}
+    \hline
+    Inputs: & one point (0D Geometry), one Vector\\
+    \hline
+    Fields: & none\\
+    \hline
+    Output: & a Mesh Geometry object\\
+    \hline
+\end{tabular}
+\vspace{5pt}
 
 This node takes one point and a normal vector to create a special representation
 of a plane. In particular, the representation consists of an evely-spaced grid centered
@@ -115,10 +154,19 @@ visualization purposes, not to have a built-in parametric surface.
 It is not allowed to apply a parametric transform to a Mesh Geometry,
 only a constant-valued transform or a time-dependant transform can be applied to it.
 
-\subsubsection{Geometry > Primitive}
-Inputs: none
-Fields: Kind (a drop-down menu), Size
-Outputs: a Mesh Geometry object
+\subsubsection{Primitive}
+
+\hspace{\baselineskip}
+\begin{tabular}{g|l}
+    \hline
+    Inputs: & none\\
+    \hline
+    Fields: & Kind (a drop-down menu), Size\\
+    \hline
+    Output: &  a Mesh Geometry object\\
+    \hline
+\end{tabular}
+\vspace{5pt}
 
 This node allows the user to create a basic primitive of the given kind
 (Cube, Sphere, Cylinder, Cone, Pyramid or a Dice). The Size fields allows
@@ -130,10 +178,22 @@ for quick visualization or similar purposes. Again, only constant-valued
 or time-dependent transforms can be applied to this object,
 parametric transforms are not allowed.
 
-\subsubsection{Parameters > Interval}
-Inputs: None
-Fields: Name, Begin, End, Quality
-Outputs: Interval
+\subsection{Parameters}
+This submenu contains all the nodes related to parameters
+
+\subsubsection{Interval}
+
+\hspace{\baselineskip}
+\begin{tabular}{g|l}
+    \hline
+    Inputs: & none\\
+    \hline
+    Fields: & Name, Begin, End, Quality\\
+    \hline
+    Output: &  Interval\\
+    \hline
+\end{tabular}
+\vspace{5pt}
 
 This node defines a parameter. By assigning a name, you will then be able
 to use this parameter in expressions for parametric curves, surfaces and matrices.
@@ -141,20 +201,38 @@ Begin and End define the closed range in which the parameter lives, while qualit
 allows the user to choose how many discretization points will be used when creating
 a curve or a surface out of this parameter.
 
-\subsubsection{Parameters > Value}
-Inputs: None
-Fields: Name, Value
-Outputs: Parameter Value
+\subsubsection{Value}
+
+\hspace{\baselineskip}
+\begin{tabular}{g|l}
+    \hline
+    Inputs: & none\\
+    \hline
+    Fields: & Name, Value\\
+    \hline
+    Output: &  Parameter Value\\
+    \hline
+\end{tabular}
+\vspace{5pt}
 
 In a similar way to the Interval node, the Value node lets you define a parameter
 and assign a specific value to it. You can use it either as a "variable"
 to be used as input for a matrix (e.g. define a theta and then use theta as the
 angle for a rotation matrix expressions) or as an input to the Sample Parameter node.
 
-\subsubsection{Parameters > Sample Parameter}
-Inputs: 1D or 2D Geometry object, Parameter Value
-Fields: none
-Outputs: 0D or 1D Geometry object
+\subsubsection{Sample Parameter}
+
+\hspace{\baselineskip}
+\begin{tabular}{g|l}
+    \hline
+    Inputs: & 1D or 2D Geometry object, Parameter Value\\
+    \hline
+    Fields: & none\\
+    \hline
+    Output: &  0D or 1D Geometry object\\
+    \hline
+\end{tabular}
+\vspace{5pt}
 
 The parameter sampling operation allows you to "downgrade" the dimension of a parametric
 Geometric object, by fixing the value of a parameter to the value given as input.
@@ -164,10 +242,23 @@ as to the one used in the Value input (e.g. if a surface is $S(p, q)$, your valu
 have the parameter name $r$, only $p$ or $q$ will be accepted). Please note that 1D Geometry created with the Bezi\`er
 curve uses a hidden parameter name, and cannot therefore be sampled.
 
-\subsubsection{Transformations > Generic Matrix}
-Inputs: Parameter (either Interval or Value), facultative
-Fields: matrix elements
-Outputs: Matrix object
+\subsection{Transformations}
+This submenu contains all nodes used to define transformation matrices and to
+apply those to geometry objects.
+
+\subsubsection{Generic Matrix}
+
+\hspace{\baselineskip}
+\begin{tabular}{g|l}
+    \hline
+    Inputs: & Parameter (either Interval or Value), facultative\\
+    \hline
+    Fields: & matrix elements\\
+    \hline
+    Output: &  Matrix object\\
+    \hline
+\end{tabular}
+\vspace{5pt}
 
 This node is used to define a generic Matrix, by writing one expression for each
 matrix element. If an Interval is given as an input, then the output matrix will be
@@ -179,26 +270,53 @@ As usual, if you provide a parameter as an input, make sure you
 will be actually using it inside the expressions to prevent any kind of visualization
 issue.
 
-\subsubsection{Transformations > Rotation Matrix}
-Inputs: None
-Fields: Axis (drop down menu), Angle
-Outputs: Matrix object
+\subsubsection{Rotation Matrix}
+
+\hspace{\baselineskip}
+\begin{tabular}{g|l}
+    \hline
+    Inputs: & none\\
+    \hline
+    Fields: & Axis (drop down menu), Angle\\
+    \hline
+    Output: &  Matrix object\\
+    \hline
+\end{tabular}
+\vspace{5pt}
 
 This node allows the user to quickly define a matrix which represents a rotation
 of Angle radians around the chosen Axis.
 
-\subsubsection{Transformations > Translation Matrix}
-Inputs: Vector
-Fields: None
-Outputs: Matrix Object
+\subsubsection{Translation Matrix}
+
+\hspace{\baselineskip}
+\begin{tabular}{g|l}
+    \hline
+    Inputs: & Vector\\
+    \hline
+    Fields: & none\\
+    \hline
+    Output: &  Matrix Object\\
+    \hline
+\end{tabular}
+\vspace{5pt}
 
 Similarly to the previous, this node allows the user to quickly define a translation
 matrix given the input Vector
 
-\subsubsection{Transformations > Transform}
-Inputs: Geometry object, Matrix object
-Fields: None
-Outputs: Geometry object
+\subsubsection{Transform}
+
+\hspace{\baselineskip}
+\begin{tabular}{g|l}
+    \hline
+    Inputs: & Geometry object, Matrix object\\
+    \hline
+    Fields: & none\\
+    \hline
+    Output: &  Geometry object\\
+    \hline
+\end{tabular}
+\vspace{5pt}
 
 This node takes a matrix and applies it to a geometry, returning the transformed geometry.
 If the input matrix was a parametric matrix, then a parametric transformation will be applied.
@@ -207,50 +325,97 @@ a parametric curve or surface that depends on the same parameter used by the mat
 the output geometry will still be a curve or a surface, modified accordingly
 (e.g. applying a translation to a circle may output a spiral)
 
-\subsubsection{Transformations > Time Transform}
-Inputs: None
-Fields: matrix elements
-Outputs: Time Transform object
+\subsubsection{Time Transform}
+
+\hspace{\baselineskip}
+\begin{tabular}{g|l}
+    \hline
+    Inputs: & none\\
+    \hline
+    Fields: & matrix elements\\
+    \hline
+    Output: &  Time Transform object\\
+    \hline
+\end{tabular}
+\vspace{5pt}
 
 This node creates a Time Transform object, read th paragraph in the Data Types
 section for more informations. All the expressions for the matrix elements
 can contain the parameter $t$, i.e. ``time''.
 
-\subsubsection{Point}
-Inputs: none
-Fields: $x$, $y$, $z$
-Outputs: 0D Geometry object
+\subsection{Point}
+
+\hspace{\baselineskip}
+\begin{tabular}{g|l}
+    \hline
+    Inputs: & none\\
+    \hline
+    Fields: & $x$, $y$, $z$\\
+    \hline
+    Output: &  0D Geometry object\\
+    \hline
+\end{tabular}
+\vspace{5pt}
 
 A very simple node to create a point. The implicit $w$ coordinate is set to $1$
 
-\subsubsection{Vector}
-Inputs: none
-Fields: $x$, $y$, $z$
-Outputs: Vector object
+\subsection{Vector}
+
+\hspace{\baselineskip}
+\begin{tabular}{g|l}
+    \hline
+    Inputs: & none\\
+    \hline
+    Fields: & $x$, $y$, $z$\\
+    \hline
+    Output: &  Vector object\\
+    \hline
+\end{tabular}
+\vspace{5pt}
 
 A very simple node to create a Vector. As described in the data types section, a vector
 is to be interpreted as a ``direction'', and the implicit $w$ coordinate is set to $0$
 
-\subsubsection{Geometry Renderer}
-Inputs: Geometry, Time Transform
-Fields: Thickness, Color
-Outputs: None
+\subsection{Geometry Renderer}
+
+
+\hspace{\baselineskip}
+\begin{tabular}{g|l}
+    \hline
+    Inputs: & Geometry, Time Transform\\
+    \hline
+    Fields: & Thickness, Color\\
+    \hline
+    Output: &  none\\
+    \hline
+\end{tabular}
+\vspace{5pt}
 
 This node is the one responsible for taking a Geometry object and rendering it to the screen.
 Every frame the the Time Transform is applied to the it before rendering, by evaluating the
 transform with a different value of $t$. The user can choose what color to use for any kind
 of Geometry, while the Thickness value only effects the display of 1D geometries (curves).
 
-\subsubsection{Vector Renderer}
-Inputs: Point, Vector
-Fields: Thickness, Color
-Outputs: None
+\subsection{Vector Renderer}
+
+\hspace{\baselineskip}
+\begin{tabular}{g|l}
+    \hline
+    Inputs: & Point, Vector\\
+    \hline
+    Fields: & Thickness, Color\\
+    \hline
+    Output: &  none\\
+    \hline
+\end{tabular}
+\vspace{5pt}
+
 
 This node is used to display a Vector, by representing it as an arrow.
 Since a Vector is only a direction, the user must also provide the application point (i.e: the "tail") of the vector.
 Just like with the Geometry Renderer, one can choose a color and the thickness of the arrow.
 
-\subsection{Notes}
+\section{Notes}
 Assembling a graph does not have a 1:1 correspondency with writing procedural
 code (e.g.: classical C code). You are only describing a series of
 objects and a set of operations that manipulate those objects. The software
