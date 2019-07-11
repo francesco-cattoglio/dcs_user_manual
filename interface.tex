@@ -1,72 +1,44 @@
 \chapter{User Interface}
 
-\section{Basic concepts}
+The user interface consists of a top bar, a status bar in the bottom,
+the Scene Viewport and the Node Graph Editor with the Graph Menu Bar.
+When the software is loaded the Node Graph Editor is shown. On the top left
+of the graph editor there is an arrow that can be used to minimize it,
+revealing the Scene Viewport behind it. The top bar and the status bar are
+always visible.
 
-The central element of the user interface is the node graph editor. Inside it
-you create and link nodes of different type to assemble the scene containing all
-the computed objects.
+\section{Node Graph Editor}
 
-There are several different kind of nodes, each with a different functionality
-and a different number of inputs, but only one output. This output contains
-some data that can be used as an input to one or more other nodes, simply by dragging a link
-between them using the mouse. While the same output can be used as input to multiple nodes,
-the opposite is an error: you cannot feed data coming from 2 outputs into one input.
-
-One can only connect an output to an input of the same type. For example, it
-would not make sense to pass an \textbf{Interval} to a node that requires
-a \textbf{Matrix} input. See the next section for a complete description of
-all datatypes.
-
-\section{Data types}
-
-\subsection{Geometry}
-The most important data type is \textbf{Geometry}. This represents a generic geometric
-object, it might be a point (0D), a curve (1D), a surface (2D) or a pre-fabricated mesh.
-Most of the time we start by creating a geometry of some sort, then
-manipulate it with transform functions, and in the end plug the result
-into a Renderer node that is the one that turns our data into something
-that we visualize on screen.
-As we will see later on, parametric transformations and sampling operations
-can change the geometric dimension of a Geometry object. As an example,
-a given curve can become a surface by applying a parametric transform to it.
-
-\subsection{Vector}
-As the name implies, the data contained in this type is just a vector with
-user-chosen $x$, $y$ and $z$ coordinates. There is however a very important
-difference between a vector and a point: a vector is \textbf{not} a Geometry and
-can \textbf{only} be used to build a translation Matrix, as a plane normal or for
-visualization purposes. This is because the vector is to be intended as a direction,
-not as a generic coordinate in the 3D space. If we write a vector
-in homogeneous coordinates, its $w$ component is \textbf{always zero}.
-
-\subsection{Matrix}
-This data contains a 4x4 matrix which should be interpreted as a transformation written in
-homogeneous coordinates. The matrix can be either parametric or a constant-valued one.
-See the nodes section of this chapter to know more about the different matrices that can
-be created.
-
-\subsection{Time Transform}
-This is a very specific 4x4 matrix with an implicit parameter named $t$ as in \textit{time}.
-By writing out time-dependent expressions, the user can attach some animation to 
-a rendered Geometry object. This can be useful for example to show the movement of a
-point along a curve, or to display how a transformation progressively deforms an object
-into a final shape.
-
-\subsection{Interval and Value}
-Both \textbf{Interval} and \textbf{Value} data deals with parameters: the first contains
-the parameter and its interval boundaries, while the second contains the parameter and
-a specific value in its interval, to be used in a \textbf{Sample parameter} node.
-
-\section{Nodes}
-
+The Node Graph Editor is where most of the work is done.
 Each node represents an operation that creates or modifies data. Besides the inputs and
 the output, many nodes also have internal fields in which the user can write an expression
-or choose a value for a given property (e.g. a function or ``$pi/4$'' for an angle).
+or choose a value for a given property (e.g. a function, or ``$pi/4$'' for an angle).
 
-To add a node, simply right-click on empty space inside the node graph editor;
-a popup menu will open to display all the available node types, grouped by categories.
-Clicking on a menu item will place the newly-created node of the corresponding type.
-The following section contains a detailed explaination of all menu entries.
+The user can perform the following:
+\begin{itemize}
+    \item To add a node, simply right-click on empty space inside the node graph editor;
+            a popup menu will open to display all the available node types, grouped by categories.
+            See the following section for a detailed explaination of all menu entries.
+
+    \item To move a node around, left click on its header and drag it to its new position.
+
+    \item You can select a group of nodes by left-clicking on empty space and dragging the mouse,
+            or by clicking on nodes while holding the \texttt{ctrl} key, to move all of them together.
+
+    \item To remove a node, right-click on its header and select ``delete'' from the dropdown menu.
+
+    \item To connect two nodes, hover over an input or an output. When the label turns blue, click it
+            and drag with the mouse to the label of the output or input that you want to connect to. 
+
+    \item To remove a connection, double-click it or hover and press the \texttt{delete} key
+
+    \item The user can pan around the graph by right-clicking on empty space and dragging with the mouse,
+            or by using the mouse scroll/holding the \texttt{shift} key and using the mouse scroll.
+
+    \item The user can zoom in or out my holding the \texttt{ctrl} key and using the mouse scroll.
+        clicking the mouse scroll (a.k.a. \texttt{Mouse3} button) will reset the zoom level to 1.
+
+\end{itemize}
 
 \subsection{Geometry submenu}
 The geometry submenu contains the following nodes:
@@ -85,10 +57,10 @@ The geometry submenu contains the following nodes:
 \end{tabular}
 \vspace{5pt}
 
-This node is used to create a parametric curve using a parameter as defined in
-Interval and with the given expressions for fx, fy and fz. Simple to use,
-just make sure to create an expression using the correct parameter name
-(i.e. the same name used inside the Interval given as input)
+This node is used to create a parametric curve using the input parameter Interval
+and the given expressions for fx, fy and fz. Simple to use,
+just make sure that the expressions are using the correct parameter name
+(i.e. the same name used by the input Interval)
 
 \subsubsection{Bezier}
 
@@ -105,9 +77,9 @@ just make sure to create an expression using the correct parameter name
 \vspace{5pt}
 
 This node uses its inputs as control points for a Bezi\`er curve. The degree of the
-curve depends on how many inputs have been connected. Empty inputs are ignored.
-The Quality field determines how many points will be used to approximate the ideal
-Bezi\`er.
+curve depends on how many inputs have been connected and empty inputs are ignored.
+The Quality field determines the quality of the numerical approximation
+of the ideal Bezi\`er curve.
 
 \subsubsection{Surface}
 
@@ -123,18 +95,18 @@ Bezi\`er.
 \end{tabular}
 \vspace{5pt}
 
-Similarly to the curve node, this can be used to create a parametric surface
-given two intervals and the given expressions for fx, fy and fz.
-Both intervals are required, and the user should make sure to use both of them,
-since if one is ignored it is likely that nothing will be visualized as a result,
-since that will create a degenerated surface.
+Similarly to the curve one, this node can be used to create a parametric surface
+given two Intervals and the given expressions for fx, fy and fz.
+Both intervals are required and the user should use both of them:
+if one parameter is never used in the expressions, it is likely that no visual output
+will be produced, since a degenerated surface will be created.
 
 \subsubsection{Plane}
 
 \hspace{\baselineskip}
 \begin{tabular}{g|l}
     \hline
-    Inputs: & one point (0D Geometry), one Vector\\
+    Inputs: & 1 point (0D Geometry), 1 Vector\\
     \hline
     Fields: & none\\
     \hline
@@ -148,10 +120,10 @@ of a plane. In particular, the representation consists of an evely-spaced grid c
 about the point given as input.
 
 Please note the output is \textbf{not} a 2D Geometry, but a Mesh Geometry,
-which means that the purpose of this node is to have something useful for
-visualization purposes, not to have a built-in parametric surface.
-It is not allowed to apply a parametric transform to a Mesh Geometry,
-only a constant-valued transform or a time-dependant transform can be applied to it.
+this means that you will not be allowed to apply a parametric transform
+or a sample operation to a it, only a constant-valued transform can be applied.
+This is because the purpose of this node is to have something useful for
+visualization purposes, not to have a built-in parametric plane.
 
 \subsubsection{Primitive}
 
@@ -162,20 +134,19 @@ only a constant-valued transform or a time-dependant transform can be applied to
     \hline
     Fields: & Kind (a drop-down menu), Size\\
     \hline
-    Output: &  a Mesh Geometry object\\
+    Output: & a Mesh Geometry object\\
     \hline
 \end{tabular}
 \vspace{5pt}
 
 This node allows the user to create a basic primitive of the given kind
-(Cube, Sphere, Cylinder, Cone, Pyramid or a Dice). The Size fields allows
+(Cube, Sphere, Cylinder, Cone, Pyramid or Dice). The Size fields allows
 adjusting the primitive dimensions. See the question mark next to the 
 slider for a description of how this value effects the output.
 
 Just like the Plane node, the output is a Mesh Geometry, which is useful
-for quick visualization or similar purposes. Again, only constant-valued
-or time-dependent transforms can be applied to this object,
-parametric transforms are not allowed.
+for quick visualization or similar purposes. Parametric transforms
+on these objects are not allowed.
 
 \subsection{Parameters submenu}
 This submenu contains all the nodes related to parameters
@@ -189,14 +160,14 @@ This submenu contains all the nodes related to parameters
     \hline
     Fields: & Name, Begin, End, Quality\\
     \hline
-    Output: &  Interval\\
+    Output: & Interval\\
     \hline
 \end{tabular}
 \vspace{5pt}
 
 This node defines a parameter. By assigning a name, you will then be able
 to use this parameter in expressions for parametric curves, surfaces and matrices.
-Begin and End define the closed range in which the parameter lives, while quality
+Begin and End define the closed range in which the parameter lives, while Quality
 allows the user to choose how many discretization points will be used when creating
 a curve or a surface out of this parameter.
 
@@ -209,15 +180,15 @@ a curve or a surface out of this parameter.
     \hline
     Fields: & Name, Value\\
     \hline
-    Output: &  Parameter Value\\
+    Output: & Parameter Value\\
     \hline
 \end{tabular}
 \vspace{5pt}
 
 In a similar way to the Interval node, the Value node lets you define a parameter
-and assign a specific value to it. You can use it either as a "variable"
-to be used as input for a matrix (e.g. define a theta and then use theta as the
-angle for a rotation matrix expressions) or as an input to the Sample Parameter node.
+and assign a specific value to it. You can use it either as a ``variable''
+to be used as input for a Matrix (e.g. define theta and then use it as a generic
+angle inside the matrix expressions) or as an input to the Sample Parameter node.
 
 \subsubsection{Sample Parameter}
 
@@ -228,33 +199,34 @@ angle for a rotation matrix expressions) or as an input to the Sample Parameter 
     \hline
     Fields: & none\\
     \hline
-    Output: &  0D or 1D Geometry object\\
+    Output: & 0D or 1D Geometry object\\
     \hline
 \end{tabular}
 \vspace{5pt}
 
-The parameter sampling operation allows you to "downgrade" the dimension of a parametric
-Geometric object, by fixing the value of a parameter to the value given as input.
+The parameter sampling operation allows you to ``downgrade'' the dimension of a parametric
+Geometric object, by assigning a parameter the value given as input.
 
 In order for the operation to succeed, the Geometry must have a parameter with the same name
-as to the one used in the Value input (e.g. if a surface is $S(p, q)$, your value cannot
-have the parameter name $r$, only $p$ or $q$ will be accepted). Please note that 1D Geometry created with the Bezi\`er
+as to the one used in the Value input (e.g. if a surface is $S(p, q)$, the input value cannot
+named $r$, only $p$ or $q$ will be accepted). The value must also be inside
+the parameter's range. Please note that 1D Geometry created with the Bezi\`er
 curve uses a hidden parameter name, and cannot therefore be sampled.
 
 \subsection{Transformations submenu}
 This submenu contains all nodes used to define transformation matrices and to
-apply those to geometry objects.
+apply them to geometry objects.
 
 \subsubsection{Generic Matrix}
 
 \hspace{\baselineskip}
 \begin{tabular}{g|l}
     \hline
-    Inputs: & Parameter (either Interval or Value), facultative\\
+    Inputs: & Parameter (either Interval or Value), optional\\
     \hline
     Fields: & matrix elements\\
     \hline
-    Output: &  Matrix object\\
+    Output: & Matrix object\\
     \hline
 \end{tabular}
 \vspace{5pt}
@@ -278,7 +250,7 @@ issue.
     \hline
     Fields: & Axis (drop down menu), Angle\\
     \hline
-    Output: &  Matrix object\\
+    Output: & Matrix object\\
     \hline
 \end{tabular}
 \vspace{5pt}
@@ -295,7 +267,7 @@ of Angle radians around the chosen Axis.
     \hline
     Fields: & none\\
     \hline
-    Output: &  Matrix Object\\
+    Output: & Matrix Object\\
     \hline
 \end{tabular}
 \vspace{5pt}
@@ -312,7 +284,7 @@ matrix given the input Vector
     \hline
     Fields: & none\\
     \hline
-    Output: &  Geometry object\\
+    Output: & Geometry object\\
     \hline
 \end{tabular}
 \vspace{5pt}
@@ -333,7 +305,7 @@ the output geometry will still be a curve or a surface, modified accordingly
     \hline
     Fields: & matrix elements\\
     \hline
-    Output: &  Time Transform object\\
+    Output: & Time Transform object\\
     \hline
 \end{tabular}
 \vspace{5pt}
@@ -351,7 +323,7 @@ can contain the parameter $t$, i.e. ``time''.
     \hline
     Fields: & $x$, $y$, $z$\\
     \hline
-    Output: &  0D Geometry object\\
+    Output: & 0D Geometry object\\
     \hline
 \end{tabular}
 \vspace{5pt}
@@ -367,7 +339,7 @@ A very simple node to create a point. The implicit $w$ coordinate is set to $1$
     \hline
     Fields: & $x$, $y$, $z$\\
     \hline
-    Output: &  Vector object\\
+    Output: & Vector object\\
     \hline
 \end{tabular}
 \vspace{5pt}
@@ -385,7 +357,7 @@ is to be interpreted as a ``direction'', and the implicit $w$ coordinate is set 
     \hline
     Fields: & Thickness, Color\\
     \hline
-    Output: &  none\\
+    Output: & none\\
     \hline
 \end{tabular}
 \vspace{5pt}
@@ -404,7 +376,7 @@ of Geometry, while the Thickness value only effects the display of 1D geometries
     \hline
     Fields: & Thickness, Color\\
     \hline
-    Output: &  none\\
+    Output: & none\\
     \hline
 \end{tabular}
 \vspace{5pt}
@@ -414,11 +386,38 @@ This node is used to display a Vector, by representing it as an arrow.
 Since a Vector is only a direction, the user must also provide the application point (i.e: the "tail") of the vector.
 Just like with the Geometry Renderer, one can choose a color and the thickness of the arrow.
 
-\section{Notes}
-Assembling a graph does not have a 1:1 correspondency with writing procedural
-code (e.g.: classic \CC{} code). You are only describing a series of
-objects and a set of operations that manipulate those objects, not the order
-in which the computations will be executed. The order of execution will be
-decided by the software by looking at how nodes depend from each other.
-It is an error to create a loop in the graph.
+\section{Top Bar}
+
+%The Top Bar is what makes it possible to animate all the Geometry Renderers that have a Time Transform
+attached to them.
+TODO
+
+\section{Graph Menu Bar}
+
+The Graph Menu Bar contains 4 buttons, which function is easy to guess by their labels:
+
+\begin{itemize}
+    \item Clear Graph: deletes all nodes and connections.
+    \item Open File: clears the graph and loads a previously saved file.
+    \item Save File: saves the current graph to a file.
+    \item Generate Scene: when the user is done modifying the graph, clicking this
+        will trigger the generation of the scene.
+\end{itemize}
+
+\section{Scene Viewport}
+
+After the scene is generated, the Graph Editor is minimized and the scene containing the generated
+geometries is shown. Navigation is very easy, left-click and drag to rotate the view or use
+the mouse scroll to zoom in and out. Currently it is not possible to pan around the scene.
+The lights in the scene are placed in specific points to make sure that it is easier to understand
+the shapes one is looking at. However, this also means that some combinations of shape and colors
+might produce very dark spots in some geometries.
+
+\section{Status Bar}
+
+The status bar is an often overlooked part of the User Interface. It is however extremely useful
+because when the software detects a mistake in the graph, it will notify the user
+with a (hopefully) useful message to help understand where the error is.
+It will also report if scene generation and file operations were successful or not.
+
 

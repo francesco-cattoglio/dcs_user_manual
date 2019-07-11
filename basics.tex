@@ -1,0 +1,66 @@
+\chapter{Basic Concepts}
+
+The central element of the user interface is the node graph editor. Inside it
+you create and link nodes of different type to assemble the scene containing all
+the computed objects.
+
+There are several different kind of nodes, each with a different functionality
+and a different number of inputs, but only one output. This output contains
+some data that can be used as an input to one or more other nodes, simply by dragging a link
+between them using the mouse. While the same output can be used as input to multiple nodes,
+the opposite is an error: you cannot feed data coming from 2 outputs into one input.
+
+One can only connect an output to an input of the same type. For example, it
+would not make sense to pass an \textbf{Interval} to a node that requires
+a \textbf{Matrix} input.
+
+\section{Data types}
+
+\subsection{Geometry}
+The most important data type is \textbf{Geometry}. This represents a generic geometric
+object, it might be a point (0D), a curve (1D), a surface (2D) or a pre-fabricated mesh.
+Most of the time we start by creating a geometry of some sort, then
+manipulate it with transform functions, and in the end plug the result
+into a Renderer node that is the one that turns our data into something
+that we visualize on screen.
+As we will see later on, parametric transformations and sampling operations
+can change the geometric dimension of a Geometry object. As an example,
+a given curve can become a surface by applying a parametric transform to it.
+
+\subsection{Vector}
+As the name implies, the data contained in this type is just a vector with
+user-chosen $x$, $y$ and $z$ coordinates. There is however a very important
+difference between a vector and a point: a vector is \textbf{not} a Geometry and
+can \textbf{only} be used to build a translation Matrix, as a plane normal or for
+visualization purposes. This is because the vector is to be intended as a direction,
+not as a generic coordinate in the 3D space. If we write a vector
+in homogeneous coordinates, its $w$ component is \textbf{always zero}.
+
+\subsection{Matrix}
+This data contains a 4x4 matrix which should be interpreted as a transformation written in
+homogeneous coordinates. The matrix can be either parametric or a constant-valued one.
+See the nodes section of this chapter to know more about the different matrices that can
+be created.
+
+\subsection{Time Transform}
+This is a very specific 4x4 matrix with a parameter named $t$ as in \textit{time}.
+By writing time-dependent expressions, the user can attach some animation to 
+a rendered Geometry object. This can be useful for example to show the movement of a
+point along a curve, or to display how a transformation progressively deforms an object
+into a final shape.
+
+\subsection{Interval and Value}
+Both \textbf{Interval} and \textbf{Value} data deals with parameters: the first contains
+the parameter and its interval boundaries, while the second contains the parameter and
+a specific value in its interval, to be used in a \textbf{Sample parameter} node.
+
+
+\section{Notes}
+Assembling a graph does not have a 1:1 correspondency with writing procedural
+code (e.g.: classic \CC{} code). You are only describing a series of
+objects and a set of operations that manipulate those objects, not the order
+in which the computations will be executed. The order of execution will be
+decided by the software by looking at how nodes depend from each other.
+It is an error to create a loop in the graph, i.e. using the output of a
+transform as its own input.
+
