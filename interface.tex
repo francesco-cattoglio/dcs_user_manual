@@ -388,9 +388,27 @@ Just like with the Geometry Renderer, one can choose a color and the thickness o
 
 \section{Top Bar}
 
-%The Top Bar is what makes it possible to animate all the Geometry Renderers that have a Time Transform
-attached to them.
-TODO
+As it was explained before, any Geometry Renderer can have a Time Transform attached to it.
+This time transform contains a parameter named $t$ that will changes in real time while the
+user interacts with the rendered scene, as opposed to all other parameters that are evaluated
+only once when the scene is generated.
+The Top Bar gives the user control over the value of this parameter $t$.
+
+\begin{itemize}
+    \item Start: the expression for the beginning of the parameter interval. To use
+        the constant $\pi$, write it as \texttt{pi}.
+    \item End: the expression for the end of the parameter interval.
+    \item Play/Pause: by clicking ``Play'' the parameter $t$ will increment at the given speed,
+        while by clicking ``Pause'' the parameter will stay frozen to the value selected by the user.
+    \item slider: the user can click and drag the slider to manually assign a value to $t$
+    \item Loop checkbox: as the name implies, if this box is ticked the animation will loop
+        (i.e. every time $t$ reaches the end of the interval, it will be rewinded to the start)
+    \item Speed: the speed at which $t$ advances when ``Play'' is clicked. Defaults to $0.75$,
+        meaning that 1 second of wall clock time will advance $t$ by $0.75$. The user can either
+        write down the speed or click on the \texttt{+/-} signs to increase in small steps.
+        Negative speeds are allowed!
+\end{itemize}
+
 
 \section{Graph Menu Bar}
 
@@ -403,6 +421,11 @@ The Graph Menu Bar contains 4 buttons, which function is easy to guess by their 
     \item Generate Scene: when the user is done modifying the graph, clicking this
         will trigger the generation of the scene.
 \end{itemize}
+
+Clearing the graph, opening or saving a file will open a dialog asking to confirm the operation.
+In particular, when saving a file the extension \texttt{.toml} will be automatically added if
+the name does not contain it, and if any name conflict arises, then the user will be asked if
+the software should overwrite the file or cancel the operation.
 
 \section{Scene Viewport}
 
