@@ -8,7 +8,11 @@ revealing the Scene Viewport behind it. The top bar and the status bar are
 always visible.
 
 \section{Node Graph Editor}
-
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.666\textwidth]{figures/graph_editor.png}
+%\caption{\label{fig:topbar}}
+\end{figure}
 The Node Graph Editor is where most of the work is done.
 Each node represents an operation that creates or modifies data. Besides the inputs and
 the output, many nodes also have internal fields in which the user can write an expression
@@ -39,6 +43,12 @@ The user can perform the following:
         clicking the mouse scroll (a.k.a. \texttt{Mouse3} button) will reset the zoom level to 1.
 
 \end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{figures/right_click_popup.png}
+\caption{\label{fig:rightclick_manu} The right-click menu, with the ``Geometry'' submenu open}
+\end{figure}
 
 \subsection{Geometry submenu}
 The geometry submenu contains the following nodes:
@@ -388,6 +398,12 @@ Just like with the Geometry Renderer, one can choose a color and the thickness o
 
 \section{Top Bar}
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=1.0\textwidth]{figures/top_bar.png}
+%\caption{\label{fig:topbar} The right-click menu, with the ``Geometry'' submenu open}
+\end{figure}
+
 As it was explained before, any Geometry Renderer can have a Time Transform attached to it.
 This time transform contains a parameter named $t$ that will changes in real time while the
 user interacts with the rendered scene, as opposed to all other parameters that are evaluated
@@ -411,6 +427,12 @@ The Top Bar gives the user control over the value of this parameter $t$.
 
 
 \section{Graph Menu Bar}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{figures/graph_menu_bar.png}
+%\caption{\label{fig:topbar} The right-click menu, with the ``Geometry'' submenu open}
+\end{figure}
 
 The Graph Menu Bar contains 4 buttons, which function is easy to guess by their labels:
 
@@ -438,7 +460,14 @@ might produce very dark spots in some geometries.
 
 \section{Status Bar}
 
-The status bar is an often overlooked part of the User Interface. It is however extremely useful
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{figures/status_bar.png}
+\caption{\label{fig:status_bar} The status bar reporting an error in the user-created graph}
+\end{figure}
+
+The status bar is an often overlooked part of the User Interface, probably due to its location
+at the very bottom of the window. It is however extremely useful
 because when the software detects a mistake in the graph, it will notify the user
 with a (hopefully) useful message to help understand where the error is.
 It will also report if scene generation and file operations were successful or not.
