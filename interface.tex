@@ -132,8 +132,8 @@ of a plane. In particular, the representation consists of an evely-spaced grid c
 about the point given as input.
 
 Please note the output is \textbf{not} a 2D Geometry, but a Mesh Geometry;
-this means that you will not be allowed to apply a parametric transform
-or a sample operation to a it, only a constant-valued transform can be applied.
+this means that you will not be allowed to apply a parametric transformation
+or a sample operation to a it, only a constant-valued transformation can be applied.
 This is because the purpose of this node is to have something useful for
 visualization purposes, not to have a built-in parametric plane.
 
@@ -157,7 +157,7 @@ adjusting the primitive dimensions. See the question mark next to the
 slider for a description on how this value effects the output.
 
 Just like the Plane node, the output is a Mesh Geometry, which is useful
-for quick visualization or similar purposes. Parametric transforms
+for quick visualization or similar purposes. Parametric transformations
 on these objects are \textbf{not} allowed.
 
 \subsection{Parameters submenu}
@@ -307,7 +307,7 @@ matrix given the input Vector.
 This node takes a matrix and applies it to a Geometry, producing a transformed Geometry.
 If the input matrix was a parametric matrix, then a parametric transformation will be applied.
 
-Please note that a parametric transform is not ``blindly'' applied to an object; instead
+Please note that a parametric transformation is not ``blindly'' applied to an object; instead
 the parameter names will be read and the operation will be performed accordingly.
 As an example, consider a circle on the $xy$ plane parametrized in $s$: if we apply
 a parametric translation with value $[0, 0, s]$, the output will be a circular helix.
@@ -379,7 +379,7 @@ is to be interpreted as a direction, and the implicit $w$ coordinate is set to $
 
 This node is the one responsible for taking a Geometry object and rendering it to the screen.
 Every frame the the Time Transform is applied to it by evaluating the
-transform with the current value of $t$. The user can choose what Color to use for any
+transformation with the current value of $t$. The user can choose what Color to use for any
 Geometry, while the Thickness value only affects the display of 1D geometries (curves).
 
 \subsection{Vector Renderer}
@@ -410,7 +410,7 @@ Just like with the Geometry Renderer, one can choose a color and the thickness o
 \end{figure}
 
 As it was explained before, any Geometry Renderer can have a Time Transform attached to it.
-This transform contains a parameter named $t$ that changes in real time while the
+This transformation contains a parameter named $t$ that changes in real time while the
 user interacts with the rendered scene, as opposed to all other parameters that are evaluated
 only once when the scene is generated.
 The Top Bar gives the user control over the value of this parameter $t$. It contains the following:
@@ -457,8 +457,8 @@ the software should overwrite the file or abort the operation.
 \section{Scene Viewport}
 
 After the scene is generated, the Graph Editor is minimized and the scene containing the generated
-geometries is shown. Navigation is very easy: left-click and drag to rotate the view or use
-the mouse scroll to zoom in and out. Currently it is not possible to pan around the scene.
+geometries is shown. Navigation is very easy: left-click and drag to rotate the view and use
+the mouse scroll or numpad's ``+/-'' to control zoom. Currently it is not possible to pan around the scene.
 The scene contains some colored lights placed in specific points in the attempt to make it easier to
 understand what shapes the user is looking at. However this also means that some combinations of shape
 and colors might produce dark spots in some geometries, try using a different color if this happens.

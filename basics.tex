@@ -52,11 +52,11 @@ point along a curve, or to display how a transformation progressively deforms an
 into a final shape.
 
 \subsection{Interval and Value}
-Both \textbf{Interval} and \textbf{Value} data are related to parameters.
+Both {Interval} and {Value} data are related to parameters.
 An \textbf{Interval} defines a name for a parameter and the interval on which it lives.
-Please note that this is always to be interpreted as a \textbf{closed} interval.
-A \textbf{Value} on the other hand contains the parameter name and a specific value that
-it can assume; this information can be used in a \textbf{Sample parameter} node.
+Please note that this is always to be interpreted as a closed interval.
+A \textbf{Value} on the other hand contains the parameter name with a specified value;
+this information can be used in a {Sample Parameter} node or in a matrix.
 
 \section{Notes}
 Assembling a graph does not have a 1:1 correspondency with writing procedural
@@ -71,5 +71,5 @@ to reach a \textit{sink} (i.e: visualization). It is an error to create a loop i
 it would break this flow and there would be no clear way on how to run all the
 needed computations.
 As an example, a loop might be created by using the output of a
-transform as its own input.
+transformation as its own input.
 

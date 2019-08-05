@@ -1,7 +1,10 @@
 \chapter{Installation}
 The software does not require any installation, you can simply download it
-and unzip in a folder of your choice. 
-You can skip this chapter if you have no need of compiling from sources
+and unzip in a folder of your choice. Keep in mind that both Windows and OS X
+block executables downloaded from the internet, therefore you will need to
+right-click on the executable and chose the "Open" option. This will ask if
+the software is safe to execute, and this confirmation only needs to be given once.
+You can skip the rest of this chapter if you have no need of compiling from sources.
 
 \section{Compiling from sources}
 
@@ -15,16 +18,20 @@ you have a linux-like shell environment and package manager, with a
 \texttt{mingw64}-based compiler toolchain. The generated executables will run
 on any 64-bit Windows machine, provided you bundle a few \texttt{dll} files.
 
+Under OS X, the code can been compiled using Apple's version of Clang (the default system
+compiler). Some additional tools like CMake are however required, the developer
+suggests the use of the homebrew package manager for fetching all the dependencies.
+
 \subsection{Building instructions}
-Both the software and its dependencies are written in \CC{} and use CMAKE as a
+Both the software and its dependencies are written in \CC{} and use CMake as a
 build system. You can simply \texttt{git clone} all the dependencies, cmake install
 them and be good to go.
 
 However, if you want a more guided way of building everything from scratch,
 you can start by cloning a repository that contains a series of scripts to help
 you in the process. Those will download and build
-all the parts with the needed cmake flags, using a temporary build folder
-so that your system root does not get polluted with any cmake install used
+all the parts with the needed CMake flags, using a temporary build folder
+so that your system root does not get polluted with any CMake install used
 in the process.
 
 For compiling you will need the following tools:
@@ -49,7 +56,7 @@ Please note that the dependency names might be slightly different depending on y
 
 To guided compilations via provided scripts, the list of operations is as follows:
 \begin{itemize}
-    \item \texttt{git clone http://github.com/francesco\_cattoglio/cmake\_scripts.git}
+    \item \texttt{git clone http://github.com/francesco-cattoglio/cmake\_scripts.git}
     \item run the \texttt{./cmake\_scripts/all\_git\_downloads.sh} script
     \item \texttt{mkdir tmp\_folder}
     \item export environment var: \texttt{export CMAKE\_BUILDS\_PREFIX=/full/path/to/tmp\_folder}
@@ -63,13 +70,31 @@ Since the build script makes use of relative paths, please \textbf{do not change
 
 If something goes wrong, instead of calling the \texttt{build\_everything} script,
 you can build and install dependencies one at a time and keep the build
-scripts as references for the needed cmake flags.
+scripts as references for the needed CMake flags.
 
 \subsection{Deployment}
-To deploy the executable, the procedure is a bit different, depending
-on which OS you are on. For Linux, everything is really simple since
-all of the libraries are compiled in as static libs.
+The procedure to deploy the executable is slightly different depending
+on the target OS. If you used the provided scripts, both the Linux and OS X builds
+should be standalone executables with no external dependencies. The application might be
+named ``dcs'' instead of ``franzplot'', depending on the version of the sources you are using.
 
-On Windows, ...
+On Windows, to help mitigate some bugs in the OpenGL Intel driver that is used on most
+laptops with integrated Intel HD graphics, the build process uses SDL2 and Google's
+ANGLE software. When distributing your executable, you have to also bundle it
+with the libraries provided in the \texttt{win\_deploy} subfolder:
+\texttt{libglesv2.dll}, \texttt{libegl.dll}, \texttt{libwinpthread-1.dll}, \texttt{sdl2.dll}.
+It is still possible to distribute a single \texttt{.exe} file by using a packager.
+The tool that we used for such a task is called NSIS: Nullsoft Scriptable Install System,
+which is freely available under an open source license.
 
-On OS X, ...
+To create a standalone launcher, follow those steps:
+\begin{itemize}
+    \item install the NSIS software (\texttt{https://nsis.sourceforge.io/Main\_Page})
+    \item compile the software as per the previous section
+    \item move the compiled executable inside the \texttt{win\_deploy} folder;
+        \textbf{make sure to rename it to franzplot.exe}
+    \item right click on the \texttt{create\_launcher.nsi} file and chose
+        ``compile script'' from the menu
+    \item check that the created launcher works properly by moving it to a different
+        folder and executing it
+\end{itemize}
